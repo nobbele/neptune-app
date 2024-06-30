@@ -1,53 +1,26 @@
-<script>
-	import Header from './Header.svelte';
-	import './styles.css';
+<script lang="ts">
+	import Navbar from '$lib/Navbar.svelte';
+	import 'normalize.css';
+	import '../app.css';
+	import { initAppSettings } from '$lib/appSettings.svelte';
+
+	let { children } = $props();
+
+	const appSettings = initAppSettings();
+
+	$effect(() => {
+		if (appSettings.theme == 'dark') {
+			document.documentElement.classList.add('dark');
+		} else {
+			document.documentElement.classList.remove('dark');
+		}
+	});
 </script>
 
-<div class="app">
-	<Header />
-
-	<main>
-		<slot />
+<div class="app flex flex-col min-h-screen bg-primary-1">
+	<main class="flex-1 flex flex-col p-4 w-full max-w-5xl mx-auto">
+		{@render children?.()}
 	</main>
 
-	<footer>
-		<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
-	</footer>
+	<Navbar />
 </div>
-
-<style>
-	.app {
-		display: flex;
-		flex-direction: column;
-		min-height: 100vh;
-	}
-
-	main {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		padding: 1rem;
-		width: 100%;
-		max-width: 64rem;
-		margin: 0 auto;
-		box-sizing: border-box;
-	}
-
-	footer {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		padding: 12px;
-	}
-
-	footer a {
-		font-weight: bold;
-	}
-
-	@media (min-width: 480px) {
-		footer {
-			padding: 12px 0;
-		}
-	}
-</style>
